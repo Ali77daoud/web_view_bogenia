@@ -46,56 +46,60 @@ class _WebViewPageState extends State<WebViewPage> {
           return true;
         }
       },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('Bogenia'),
-            backgroundColor: HexColor('#471337'),
-            actions: [
-              //////// back
-              IconButton(
-                  onPressed: () async {
-                    if (await controller.canGoBack()) {
-                      controller.goBack();
-                    }
+      child: Container(
+        color: HexColor('#A86A96'),
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(
+              title: const Text('Bogenia'),
+              backgroundColor: HexColor('#A86A96'),
+              //  HexColor('#471337'),
+              actions: [
+                //////// back
+                IconButton(
+                    onPressed: () async {
+                      if (await controller.canGoBack()) {
+                        controller.goBack();
+                      }
+                    },
+                    icon: const Icon(Icons.arrow_back)),
+                /////// refreshe
+                IconButton(
+                    onPressed: () {
+                      controller.reload();
+                    },
+                    icon: const Icon(Icons.refresh))
+              ],
+            ),
+            body: Stack(
+              children: [
+                WebView(
+                  // if I use http there is some config to add ....
+                  initialUrl: 'https://bogenia.com.sa',
+                  javascriptMode: JavascriptMode.unrestricted,
+                  onWebViewCreated: (controller) {
+                    this.controller = controller;
                   },
-                  icon: const Icon(Icons.arrow_back)),
-              /////// refreshe
-              IconButton(
-                  onPressed: () {
-                    controller.reload();
+                  onProgress: (int progress) {
+                    setState(() {
+                      isProgress = true;
+                    });
+                    print('WebView is loading (progress : $progress%)');
                   },
-                  icon: const Icon(Icons.refresh))
-            ],
-          ),
-          body: Stack(
-            children: [
-              WebView(
-                // if I use http there is some config to add ....
-                initialUrl: 'https://bogenia.com.sa',
-                javascriptMode: JavascriptMode.unrestricted,
-                onWebViewCreated: (controller) {
-                  this.controller = controller;
-                },
-                onProgress: (int progress) {
-                  setState(() {
-                    isProgress = true;
-                  });
-                  print('WebView is loading (progress : $progress%)');
-                },
-                onPageFinished: (string) {
-                  setState(() {
-                    isProgress = false;
-                  });
-                  print('page finished');
-                },
-              ),
-              isProgress
-                  ? Center(
-                      child: spinKit,
-                    )
-                  : Stack(),
-            ],
+                  onPageFinished: (string) {
+                    setState(() {
+                      isProgress = false;
+                    });
+                    print('page finished');
+                  },
+                ),
+                isProgress
+                    ? Center(
+                        child: spinKit,
+                      )
+                    : Stack(),
+              ],
+            ),
           ),
         ),
       ),

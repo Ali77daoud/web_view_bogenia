@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    Timer(const Duration(seconds: 5), () => goToHomeScreen());
+    Timer(const Duration(seconds: 3), () => goToHomeScreen());
   }
 
   goToHomeScreen() {
@@ -39,31 +39,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Stack(
-        children: [
-          Container(
-            color: HexColor('#F8EDF5'),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Center(
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 200,
-                ),
-              ),
-              SizedBox(
-                height: h * 0.1,
-              ),
-              spinKit,
-            ],
-          ),
-        ],
+    return Container(
+      color: HexColor('#A86A96'),
+      child: SafeArea(
+        child: Scaffold(
+            body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/bg2.png'),
+                  fit: BoxFit.cover)),
+        )),
       ),
     );
   }
